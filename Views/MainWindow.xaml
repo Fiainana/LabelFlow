@@ -11,28 +11,83 @@
             <RowDefinition Height="52"/>
             <RowDefinition Height="36"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="White" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1">
-            <Grid Margin="24,0">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Width="28" Height="28" CornerRadius="6" Background="#2563EB" Margin="0,0,10,0">
-                        <TextBlock Text="L" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <!-- ========== NAVBAR SOMBRE ========== -->
+        <Border Grid.Row="0" Background="#0B1220" BorderBrush="#1E293B" BorderThickness="0,0,0,1">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Logo + Nom -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="30" Height="30" CornerRadius="8" Background="#2563EB" Margin="0,0,10,0">
+                        <Viewbox Width="16" Height="16" Stretch="Uniform">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="White" Data="M4,6 H20 V8 H4 Z M4,11 H20 V13 H4 Z M4,16 H14 V18 H4 Z"/>
+                            </Canvas>
+                        </Viewbox>
                     </Border>
-                    <TextBlock Text="LabelFlow" FontSize="17" FontWeight="SemiBold" Foreground="#111827" VerticalAlignment="Center"/>
+                    <TextBlock Text="LabelFlow" FontSize="16" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
-                <Button x:Name="BtnSettings" Width="36" Height="36" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="OnSettingsClick" ToolTip="Paramètres">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="Bd" Background="Transparent" CornerRadius="8">
-                                <Path Data="M19.14,12.94C19.18,12.64 19.2,12.33 19.2,12C19.2,11.67 19.18,11.36 19.14,11.06L21.16,9.48C21.34,9.35 21.39,9.1 21.28,8.9L19.36,5.58C19.24,5.38 19,5.3 18.8,5.38L16.42,6.34C15.92,5.96 15.37,5.65 14.76,5.43L14.4,2.9C14.36,2.68 14.18,2.5 13.96,2.5H10.04C9.82,2.5 9.64,2.68 9.6,2.9L9.24,5.43C8.63,5.65 8.08,5.96 7.58,6.34L5.2,5.38C5,5.3 4.76,5.38 4.64,5.58L2.72,8.9C2.61,9.1 2.66,9.35 2.84,9.48L4.86,11.06C4.82,11.36 4.8,11.67 4.8,12C4.8,12.33 4.82,12.64 4.86,12.94L2.84,14.52C2.66,14.65 2.61,14.9 2.72,15.1L4.64,18.42C4.76,18.62 5,18.7 5.2,18.62L7.58,17.66C8.08,18.04 8.63,18.35 9.24,18.57L9.6,21.1C9.64,21.32 9.82,21.5 10.04,21.5H13.96C14.18,21.5 14.36,21.32 14.4,21.1L14.76,18.57C15.37,18.35 15.92,18.04 16.42,17.66L18.8,18.62C19,18.7 19.24,18.62 19.36,18.42L21.28,15.1C21.39,14.9 21.34,14.65 21.16,14.52L19.14,12.94M12,15.6C10.02,15.6 8.4,13.98 8.4,12C8.4,10.02 10.02,8.4 12,8.4C13.98,8.4 15.6,10.02 15.6,12C15.6,13.98 13.98,15.6 12,15.6Z" Fill="#6B7280" Stretch="Uniform" Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Background" Value="#F3F4F6"/></Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+
+                <!-- Badge Base au centre -->
+                <Border Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="#111827"
+                        BorderBrush="#1E293B"
+                        BorderThickness="1"
+                        CornerRadius="20"
+                        Padding="14,6">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8" Fill="#3B82F6" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock VerticalAlignment="Center" FontSize="12">
+                            <Run Text="Base : " Foreground="#94A3B8"/>
+                            <Run x:Name="TxtDatabaseName" Text="—" Foreground="White" FontWeight="SemiBold"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Statut + Paramètres -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Badge Connecté -->
+                    <Border x:Name="StatusBadge"
+                            Background="#0F172A"
+                            BorderBrush="#1E293B"
+                            BorderThickness="1"
+                            CornerRadius="16"
+                            Padding="12,5"
+                            Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="#22C55E" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtConnectionStatus" Text="Connecté" FontSize="12" Foreground="#E2E8F0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Bouton Paramètres -->
+                    <Button x:Name="BtnSettings" Width="36" Height="36" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="OnSettingsClick" ToolTip="Paramètres">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Bd" Background="#111827" CornerRadius="8" BorderBrush="#1E293B" BorderThickness="1">
+                                    <Path Data="M19.14,12.94C19.18,12.64 19.2,12.33 19.2,12C19.2,11.67 19.18,11.36 19.14,11.06L21.16,9.48C21.34,9.35 21.39,9.1 21.28,8.9L19.36,5.58C19.24,5.38 19,5.3 18.8,5.38L16.42,6.34C15.92,5.96 15.37,5.65 14.76,5.43L14.4,2.9C14.36,2.68 14.18,2.5 13.96,2.5H10.04C9.82,2.5 9.64,2.68 9.6,2.9L9.24,5.43C8.63,5.65 8.08,5.96 7.58,6.34L5.2,5.38C5,5.3 4.76,5.38 4.64,5.58L2.72,8.9C2.61,9.1 2.66,9.35 2.84,9.48L4.86,11.06C4.82,11.36 4.8,11.67 4.8,12C4.8,12.33 4.82,12.64 4.86,12.94L2.84,14.52C2.66,14.65 2.61,14.9 2.72,15.1L4.64,18.42C4.76,18.62 5,18.7 5.2,18.62L7.58,17.66C8.08,18.04 8.63,18.35 9.24,18.57L9.6,21.1C9.64,21.32 9.82,21.5 10.04,21.5H13.96C14.18,21.5 14.36,21.32 14.4,21.1L14.76,18.57C15.37,18.35 15.92,18.04 16.42,17.66L18.8,18.62C19,18.7 19.24,18.62 19.36,18.42L21.28,15.1C21.39,14.9 21.34,14.65 21.16,14.52L19.14,12.94M12,15.6C10.02,15.6 8.4,13.98 8.4,12C8.4,10.02 10.02,8.4 12,8.4C13.98,8.4 15.6,10.02 15.6,12C15.6,13.98 13.98,15.6 12,15.6Z"
+                                          Fill="#94A3B8" Stretch="Uniform" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="#1E293B"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
+
+        <!-- Toolbar recherche -->
         <Border Grid.Row="1" Background="White" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="24,12">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -51,6 +106,8 @@
                 </StackPanel>
             </Grid>
         </Border>
+
+        <!-- Grille articles -->
         <Grid Grid.Row="2" Margin="24,16,24,12">
             <Border Background="White" CornerRadius="10" BorderBrush="#E5E7EB" BorderThickness="1">
                 <DataGrid x:Name="DgArticles" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.ScrollChanged="OnArticlesScrollChanged">
@@ -74,6 +131,8 @@
                 <TextBlock Text="Chargement..." FontSize="12" FontWeight="Medium" Foreground="#1D4ED8"/>
             </Border>
         </Grid>
+
+        <!-- Footer sélection + impression -->
         <Border Grid.Row="3" Background="White" BorderBrush="#E5E7EB" BorderThickness="0,1,0,0" Padding="24,0">
             <Grid>
                 <Border Background="#EFF6FF" CornerRadius="6" Padding="10,5" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -82,6 +141,7 @@
                 <Button x:Name="BtnPrint" Content="Imprimer les étiquettes" Style="{StaticResource Btn.Primary}" HorizontalAlignment="Right" VerticalAlignment="Center" IsEnabled="False" Click="OnPrintClick"/>
             </Grid>
         </Border>
+
         <Border Grid.Row="4" Background="#FAFAFA" BorderBrush="#E5E7EB" BorderThickness="0,1,0,0">
             <TextBlock Text="by AikFlow" FontSize="11" Foreground="#9CA3AF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
