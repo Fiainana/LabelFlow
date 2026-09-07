@@ -66,7 +66,7 @@
 
             <!-- Footer -->
             <Grid Grid.Row="3">
-                <TextBlock Text="Sécurisé & Prêt."
+                <TextBlock Text="Sécurisé et Prêt."
                            FontSize="11"
                            Foreground="#64748B"
                            HorizontalAlignment="Left"
