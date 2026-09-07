@@ -1,32 +1,82 @@
 <Window x:Class="LabelFlow.Views.SplashWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="LabelFlow" Height="340" Width="480"
+        Title="LabelFlow" Height="280" Width="420"
         WindowStartupLocation="CenterScreen" WindowStyle="None"
         AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" ShowInTaskbar="False">
-    <Border Background="White" CornerRadius="14" BorderBrush="#E5E7EB" BorderThickness="1">
+
+    <Border CornerRadius="16" Background="#0B1220" BorderBrush="#1E293B" BorderThickness="1">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="28" ShadowDepth="8" Opacity="0.16" Color="Black"/>
+            <DropShadowEffect BlurRadius="40" ShadowDepth="0" Opacity="0.55" Color="Black"/>
         </Border.Effect>
-        <Grid>
+
+        <Grid Margin="32,28,32,22">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border Width="52" Height="52" CornerRadius="12" Background="#2563EB" HorizontalAlignment="Center" Margin="0,0,0,16">
-                    <TextBlock Text="L" Foreground="White" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <!-- Logo + Brand -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
+                <Border Width="40" Height="40" CornerRadius="10" Background="#2563EB" Margin="0,0,12,0">
+                    <!-- Icone liste / etiquette -->
+                    <Viewbox Width="20" Height="20" Stretch="Uniform">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="White" Data="M4,6 H20 V8 H4 Z M4,11 H20 V13 H4 Z M4,16 H14 V18 H4 Z"/>
+                        </Canvas>
+                    </Viewbox>
                 </Border>
-                <TextBlock Text="LabelFlow" FontSize="28" FontWeight="Bold" Foreground="#111827" HorizontalAlignment="Center"/>
-                <TextBlock Text="Impression d'étiquettes" FontSize="13" Foreground="#6B7280" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="LABELFLOW" FontSize="20" FontWeight="Bold" Foreground="White"
+                               FontFamily="Segoe UI" LetterSpacing="0.5"/>
+                    <TextBlock Text="Advanced Labeling Solutions" FontSize="11" Foreground="#94A3B8"
+                               Margin="0,1,0,0"/>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Row="1" Margin="48,0,48,28" HorizontalAlignment="Center">
-                <ProgressBar Height="3" Width="220" IsIndeterminate="True" Foreground="#2563EB" Background="#E5E7EB"/>
-                <TextBlock x:Name="TxtLoading" Text="Chargement..." FontSize="12" Foreground="#9CA3AF" HorizontalAlignment="Center" Margin="0,12,0,0"/>
-            </StackPanel>
-            <TextBlock Grid.Row="2" Text="by AikFlow" FontSize="11" Foreground="#9CA3AF" HorizontalAlignment="Center" Margin="0,0,0,18"/>
+
+            <!-- Message de chargement -->
+            <TextBlock Grid.Row="1"
+                       x:Name="TxtLoading"
+                       Text="Connexion aux services d'impression..."
+                       FontSize="13"
+                       Foreground="#CBD5E1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0,18,0,14"/>
+
+            <!-- Progress bar -->
+            <Border Grid.Row="2" Height="4" CornerRadius="2" Background="#1E293B" Margin="8,0,8,18">
+                <ProgressBar Height="4"
+                             IsIndeterminate="True"
+                             Foreground="#3B82F6"
+                             Background="Transparent"
+                             BorderThickness="0">
+                    <ProgressBar.Template>
+                        <ControlTemplate TargetType="ProgressBar">
+                            <Grid>
+                                <Border x:Name="PART_Track" Background="Transparent" CornerRadius="2"/>
+                                <Border x:Name="PART_Indicator" HorizontalAlignment="Left" Background="#3B82F6" CornerRadius="2"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </ProgressBar.Template>
+                </ProgressBar>
+            </Border>
+
+            <!-- Footer -->
+            <Grid Grid.Row="3">
+                <TextBlock Text="Sécurisé & Prêt."
+                           FontSize="11"
+                           Foreground="#64748B"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Run Text="by " Foreground="#64748B" FontSize="11"/>
+                    <Run Text="Aikflow" Foreground="#3B82F6" FontSize="11" FontWeight="SemiBold"/>
+                </TextBlock>
+            </Grid>
         </Grid>
     </Border>
 </Window>
