@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Threading;
 using LabelFlow.Models;
 using LabelFlow.Services;
@@ -25,7 +26,24 @@ public partial class MainWindow : Window
         InitializeComponent();
         DgArticles.ItemsSource = _articles;
         ApplyPriceFormatFromConfig();
+        UpdateNavbarStatus();
         Loaded += async (_, _) => await ResetAndLoadAsync(keepSelection: true);
+    }
+
+    private void UpdateNavbarStatus()
+    {
+        var config = ConfigService.Load();
+        if (config is null || string.IsNullOrWhiteSpace(config.Database))
+        {
+            TxtDatabaseName.Text = "—";
+            TxtConnectionStatus.Text = "Non configuré";
+            StatusDot.Fill = new SolidColorBrush(Color.FromRgb(148, 163, 184)); // gris
+            return;
+        }
+
+        TxtDatabaseName.Text = config.Database.ToUpperInvariant();
+        TxtConnectionStatus.Text = "Connecté";
+        StatusDot.Fill = new SolidColorBrush(Color.FromRgb(34, 197, 94)); // vert
     }
 
     private void ApplyPriceFormatFromConfig()
@@ -51,6 +69,7 @@ public partial class MainWindow : Window
     private async Task ResetAndLoadAsync(bool keepSelection = true)
     {
         ApplyPriceFormatFromConfig();
+        UpdateNavbarStatus();
         if (_showSelectedOnly) { await LoadSelectedOnlyAsync(); return; }
         _currentPage = 0; _hasMore = true; _totalCount = 0;
         if (!keepSelection) _selectedReferences.Clear();
