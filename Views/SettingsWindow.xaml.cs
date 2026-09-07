@@ -59,9 +59,22 @@ public partial class SettingsWindow : Window
 
     private void UpdateAuthFields()
     {
+        // Protection contre l'appel pendant InitializeComponent (RbSql encore null)
+        if (RbSql is null || RbWindows is null || TxtUser is null || TxtPassword is null || LblUser is null || LblPassword is null)
+            return;
+
         bool sql = RbSql.IsChecked == true;
-        TxtUser.IsEnabled = sql; TxtPassword.IsEnabled = sql; LblUser.IsEnabled = sql; LblPassword.IsEnabled = sql;
-        if (!sql) { TxtUser.Text = string.Empty; TxtPassword.Password = string.Empty; }
+
+        TxtUser.IsEnabled = sql;
+        TxtPassword.IsEnabled = sql;
+        LblUser.IsEnabled = sql;
+        LblPassword.IsEnabled = sql;
+
+        if (!sql)
+        {
+            TxtUser.Text = string.Empty;
+            TxtPassword.Password = string.Empty;
+        }
     }
 
     private LabelDesign GetSelectedDesign()
