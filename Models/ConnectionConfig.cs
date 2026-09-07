@@ -14,7 +14,8 @@ public enum LabelDesign
     Classic = 0,
     Compact = 1,
     ProductSheet = 2,
-    Industrial = 3
+    Industrial = 3,
+    Retail = 4   // Grand magasin / superette
 }
 
 public sealed class ConnectionConfig
