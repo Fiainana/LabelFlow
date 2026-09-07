@@ -9,6 +9,7 @@
     <ApplicationTitle>LabelFlow</ApplicationTitle>
     <AssemblyName>LabelFlow</AssemblyName>
     <RootNamespace>LabelFlow</RootNamespace>
+    <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
