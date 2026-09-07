@@ -12,12 +12,15 @@ public partial class SplashWindow : Window
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        TxtLoading.Text = "Initialisation...";
+        TxtLoading.Text = "Connexion aux services d'impression...";
         await Task.Delay(700);
+
         TxtLoading.Text = "Chargement de la configuration...";
-        await Task.Delay(600);
+        await Task.Delay(550);
+
         TxtLoading.Text = "Préparation de l'interface...";
-        await Task.Delay(500);
+        await Task.Delay(450);
+
         var main = new MainWindow();
         main.Show();
         Close();
