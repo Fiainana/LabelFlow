@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using LabelFlow.Models;
 
 namespace LabelFlow.Services;
@@ -12,12 +11,13 @@ public static class LabelRenderService
     private const double MmToDip = 96.0 / 25.4;
     public static double MmToPx(double mm) => mm * MmToDip;
 
-    // Couleurs pro
-    private static readonly SolidColorBrush DarkBrush = new(Color.FromRgb(17, 24, 39));      // #111827
-    private static readonly SolidColorBrush MutedBrush = new(Color.FromRgb(75, 85, 99));     // #4B5563
-    private static readonly SolidColorBrush AccentBrush = new(Color.FromRgb(15, 23, 42));    // #0F172A
-    private static readonly SolidColorBrush LightGrayBrush = new(Color.FromRgb(229, 231, 235)); // #E5E7EB
-    private static readonly SolidColorBrush PriceBrush = new(Color.FromRgb(185, 28, 28));    // #B91C1C
+    // Couleurs optimisées pour imprimante thermique (noir pur uniquement)
+    private static readonly SolidColorBrush BlackBrush = Brushes.Black;
+    private static readonly SolidColorBrush DarkBrush = Brushes.Black;
+    private static readonly SolidColorBrush MutedBrush = Brushes.Black;
+    private static readonly SolidColorBrush AccentBrush = Brushes.Black;
+    private static readonly SolidColorBrush PriceBrush = Brushes.Black;
+    private static readonly SolidColorBrush LightGrayBrush = new(Color.FromRgb(0, 0, 0)); // noir aussi pour les séparateurs
 
     public static FrameworkElement CreateLabel(Article article, ConnectionConfig config)
     {
@@ -69,8 +69,7 @@ public static class LabelRenderService
                     BarcodeValue(article),
                     AdaptiveFont(w, h, 0.055, 0.065),
                     FontWeights.Normal,
-                    TextAlignment.Center,
-                    brush: MutedBrush));
+                    TextAlignment.Center));
             }
 
             DockPanel.SetDock(barcodeZone, Dock.Bottom);
@@ -90,8 +89,7 @@ public static class LabelRenderService
                 article.Reference,
                 AdaptiveFont(w, h, 0.095, 0.11),
                 FontWeights.Bold,
-                TextAlignment.Center,
-                brush: DarkBrush));
+                TextAlignment.Center));
         }
 
         if (config.LabelShowDesignation)
@@ -101,8 +99,7 @@ public static class LabelRenderService
                 AdaptiveFont(w, h, 0.07, 0.085),
                 FontWeights.Normal,
                 TextAlignment.Center,
-                maxLines: 3,
-                brush: DarkBrush);
+                maxLines: 3);
             desig.Margin = new Thickness(0, h * 0.015, 0, 0);
             content.Children.Add(desig);
         }
@@ -119,8 +116,7 @@ public static class LabelRenderService
                 FormatPrice(article.PrixVente, config),
                 AdaptiveFont(w, h, 0.12, 0.14),
                 FontWeights.Bold,
-                TextAlignment.Center,
-                brush: PriceBrush));
+                TextAlignment.Center));
         }
 
         if (config.LabelShowUnit && !string.IsNullOrWhiteSpace(article.UniteVente))
@@ -129,8 +125,7 @@ public static class LabelRenderService
                 article.UniteVente!,
                 AdaptiveFont(w, h, 0.055, 0.07),
                 FontWeights.Normal,
-                TextAlignment.Center,
-                brush: MutedBrush);
+                TextAlignment.Center);
             unit.Margin = new Thickness(0, h * 0.008, 0, 0);
             content.Children.Add(unit);
         }
@@ -159,8 +154,7 @@ public static class LabelRenderService
                 article.Reference,
                 AdaptiveFont(w, h, 0.085, 0.10),
                 FontWeights.Bold,
-                TextAlignment.Left,
-                brush: DarkBrush));
+                TextAlignment.Left));
         }
 
         if (config.LabelShowDesignation)
@@ -170,8 +164,7 @@ public static class LabelRenderService
                 AdaptiveFont(w, h, 0.06, 0.075),
                 FontWeights.Normal,
                 TextAlignment.Left,
-                maxLines: 3,
-                brush: DarkBrush);
+                maxLines: 3);
             desig.Margin = new Thickness(0, h * 0.012, 0, 0);
             left.Children.Add(desig);
         }
@@ -182,8 +175,7 @@ public static class LabelRenderService
                 FormatPrice(article.PrixVente, config),
                 AdaptiveFont(w, h, 0.095, 0.115),
                 FontWeights.Bold,
-                TextAlignment.Left,
-                brush: PriceBrush);
+                TextAlignment.Left);
             price.Margin = new Thickness(0, h * 0.02, 0, 0);
             left.Children.Add(price);
         }
@@ -194,8 +186,7 @@ public static class LabelRenderService
                 article.UniteVente!,
                 AdaptiveFont(w, h, 0.05, 0.065),
                 FontWeights.Normal,
-                TextAlignment.Left,
-                brush: MutedBrush));
+                TextAlignment.Left));
         }
 
         Grid.SetColumn(left, 0);
@@ -237,7 +228,7 @@ public static class LabelRenderService
         {
             var barcodeZone = new Border
             {
-                BorderBrush = LightGrayBrush,
+                BorderBrush = BlackBrush,
                 BorderThickness = new Thickness(0, 1, 0, 0),
                 Padding = new Thickness(w * 0.06, h * 0.03, w * 0.06, h * 0.035),
                 Background = Brushes.White
@@ -252,8 +243,7 @@ public static class LabelRenderService
                     BarcodeValue(article),
                     AdaptiveFont(w, h, 0.05, 0.06),
                     FontWeights.Normal,
-                    TextAlignment.Center,
-                    brush: MutedBrush));
+                    TextAlignment.Center));
             }
             barcodeZone.Child = barcodeStack;
 
@@ -269,13 +259,11 @@ public static class LabelRenderService
 
         if (config.LabelShowReference)
         {
-            var refTb = CreateText(
+            content.Children.Add(CreateText(
                 article.Reference,
                 AdaptiveFont(w, h, 0.08, 0.095),
                 FontWeights.Bold,
-                TextAlignment.Left,
-                brush: AccentBrush);
-            content.Children.Add(refTb);
+                TextAlignment.Left));
         }
 
         if (config.LabelShowDesignation)
@@ -285,8 +273,7 @@ public static class LabelRenderService
                 AdaptiveFont(w, h, 0.068, 0.08),
                 FontWeights.SemiBold,
                 TextAlignment.Left,
-                maxLines: 3,
-                brush: DarkBrush);
+                maxLines: 3);
             desig.Margin = new Thickness(0, h * 0.012, 0, 0);
             content.Children.Add(desig);
         }
@@ -304,8 +291,7 @@ public static class LabelRenderService
                 FormatPrice(article.PrixVente, config),
                 AdaptiveFont(w, h, 0.105, 0.125),
                 FontWeights.Bold,
-                TextAlignment.Left,
-                brush: PriceBrush));
+                TextAlignment.Left));
         }
 
         if (config.LabelShowUnit && !string.IsNullOrWhiteSpace(article.UniteVente))
@@ -314,8 +300,7 @@ public static class LabelRenderService
                 "  / " + article.UniteVente,
                 AdaptiveFont(w, h, 0.06, 0.075),
                 FontWeights.Normal,
-                TextAlignment.Left,
-                brush: MutedBrush);
+                TextAlignment.Left);
             unit.VerticalAlignment = VerticalAlignment.Bottom;
             unit.Margin = new Thickness(0, 0, 0, 1);
             priceRow.Children.Add(unit);
@@ -338,7 +323,7 @@ public static class LabelRenderService
         // --- Header noir ---
         var header = new Border
         {
-            Background = DarkBrush,
+            Background = BlackBrush,
             Padding = new Thickness(w * 0.05, h * 0.04, w * 0.05, h * 0.04)
         };
 
@@ -368,8 +353,7 @@ public static class LabelRenderService
                 AdaptiveFont(w, h, 0.07, 0.085),
                 FontWeights.SemiBold,
                 TextAlignment.Left,
-                maxLines: 3,
-                brush: DarkBrush));
+                maxLines: 3));
         }
 
         if (config.LabelShowPrice || (config.LabelShowUnit && !string.IsNullOrWhiteSpace(article.UniteVente)))
@@ -386,8 +370,7 @@ public static class LabelRenderService
                     FormatPrice(article.PrixVente, config),
                     AdaptiveFont(w, h, 0.09, 0.11),
                     FontWeights.Bold,
-                    TextAlignment.Left,
-                    brush: PriceBrush));
+                    TextAlignment.Left));
             }
 
             if (config.LabelShowUnit && !string.IsNullOrWhiteSpace(article.UniteVente))
@@ -396,8 +379,7 @@ public static class LabelRenderService
                     "  " + article.UniteVente,
                     AdaptiveFont(w, h, 0.055, 0.07),
                     FontWeights.Normal,
-                    TextAlignment.Left,
-                    brush: MutedBrush));
+                    TextAlignment.Left));
             }
 
             body.Children.Add(priceLine);
@@ -415,8 +397,7 @@ public static class LabelRenderService
                     BarcodeValue(article),
                     AdaptiveFont(w, h, 0.05, 0.06),
                     FontWeights.Normal,
-                    TextAlignment.Center,
-                    brush: MutedBrush));
+                    TextAlignment.Center));
             }
         }
 
@@ -433,8 +414,8 @@ public static class LabelRenderService
         Width = w,
         Height = h,
         Background = Brushes.White,
-        BorderBrush = new SolidColorBrush(Color.FromRgb(209, 213, 219)), // gris léger pro
-        BorderThickness = new Thickness(1),
+        BorderBrush = BlackBrush,
+        BorderThickness = new Thickness(0.8),
         SnapsToDevicePixels = true
     };
 
@@ -460,7 +441,7 @@ public static class LabelRenderService
             FontWeight = weight,
             FontFamily = new FontFamily("Segoe UI"),
             TextAlignment = align,
-            Foreground = brush ?? DarkBrush,
+            Foreground = brush ?? BlackBrush,
             TextWrapping = maxLines > 1 ? TextWrapping.Wrap : TextWrapping.NoWrap,
             TextTrimming = maxLines > 1 ? TextTrimming.None : TextTrimming.CharacterEllipsis,
             LineStackingStrategy = LineStackingStrategy.BlockLineHeight,
@@ -479,7 +460,7 @@ public static class LabelRenderService
         {
             Width = width,
             Height = 1,
-            Background = LightGrayBrush,
+            Background = BlackBrush,
             HorizontalAlignment = HorizontalAlignment.Center,
             Margin = new Thickness(0, topMargin, 0, topMargin)
         };
