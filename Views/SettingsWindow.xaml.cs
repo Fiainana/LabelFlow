@@ -43,6 +43,7 @@ public partial class SettingsWindow : Window
         RbDesignCompact.IsChecked = config.LabelDesign == LabelDesign.Compact;
         RbDesignProduct.IsChecked = config.LabelDesign == LabelDesign.ProductSheet;
         RbDesignIndustrial.IsChecked = config.LabelDesign == LabelDesign.Industrial;
+        RbDesignRetail.IsChecked = config.LabelDesign == LabelDesign.Retail;
         ChkLabelRef.IsChecked = config.LabelShowReference;
         ChkLabelDesignation.IsChecked = config.LabelShowDesignation;
         ChkLabelBarcode.IsChecked = config.LabelShowBarcode;
@@ -59,7 +60,6 @@ public partial class SettingsWindow : Window
 
     private void UpdateAuthFields()
     {
-        // Protection contre l'appel pendant InitializeComponent (RbSql encore null)
         if (RbSql is null || RbWindows is null || TxtUser is null || TxtPassword is null || LblUser is null || LblPassword is null)
             return;
 
@@ -82,6 +82,7 @@ public partial class SettingsWindow : Window
         if (RbDesignCompact.IsChecked == true) return LabelDesign.Compact;
         if (RbDesignProduct.IsChecked == true) return LabelDesign.ProductSheet;
         if (RbDesignIndustrial.IsChecked == true) return LabelDesign.Industrial;
+        if (RbDesignRetail.IsChecked == true) return LabelDesign.Retail;
         return LabelDesign.Classic;
     }
 
